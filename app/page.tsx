@@ -1,25 +1,16 @@
-'use client'; // Needed to use hooks in Next.js App Router
-
-import { ChangeEvent, useEffect, useState } from 'react';
-import TodoInput from '../components/TodoInput';
-import TodoList from '../components/TodoList';
-import Home from '.';
+import Navbar from "@/components/Navbar";
 
 
-function Homepage() {
-
-  const [username, setUsername] = useState<string>('');
-
-  const handlechange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value)
-  }
+export default function Home() {
   return (
-    <div>
-      <input type="text" name="username" placeholder='Enter....' value={username} onChange={handlechange}></input>
-      <p>You Typed;{username}</p>
-      <Home />
-    </div>
-  )
+    <>
+      <Navbar />
+      <div className="container mt-5">
+        <h1 className="display-4">Welcome to My Portfolio</h1>
+        <p className="lead">
+          Hi, I'm [Your Name], a web developer passionate about building responsive and dynamic web apps.
+        </p>
+      </div>
+    </>
+  );
 }
-
-export default Homepage

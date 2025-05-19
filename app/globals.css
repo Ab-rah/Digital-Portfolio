@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 } */
+.loading_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

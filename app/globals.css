@@ -1,3 +1,4 @@
+@import "tailwindcss";
 /* @import "tailwindcss";
 
 :root {
@@ -30,3 +31,34 @@ body {
   align-items: center;
   height: 100vh;
 }
+.bg-grid-pattern {
+          background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+          background-size: 30px 30px;
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(-12deg); }
+          50% { transform: translateY(-15px) rotate(-12deg); }
+        }
+        
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0) rotate(12deg); }
+          50% { transform: translateY(-10px) rotate(12deg); }
+        }
+        
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0) translateX(-50%); }
+          50% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        .animate-float {
+          animation: float 4s ease-in-out infinite;
+        }
+        
+        .animate-float-slow {
+          animation: float-slow 5s ease-in-out infinite;
+        }
+        
+        .animate-bounce-slow {
+          animation: bounce-slow 2s ease-in-out infinite;
+        }

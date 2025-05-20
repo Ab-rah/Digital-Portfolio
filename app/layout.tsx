@@ -25,10 +25,10 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        <main className="pt-20 flex items-center justify-center min-h-screen bg-gray-100">
+        {/* <Navbar /> */}
+        {/* <main className="pt-20 flex items-center justify-center min-h-screen bg-gray-100"> */}
         {children}
-          </main>
+          {/* </main> */}
       </body>
     </html>
   );

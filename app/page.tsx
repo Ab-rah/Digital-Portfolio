@@ -53,13 +53,19 @@ export default function HeroBanner() {
 
       {/* Content container */}
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              <span className="text-white">Hello ! Im</span>
+              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400">
+                Abdhul Rahim Sheikh M
+              </span>
+            </h1>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left column - Text content */}
           <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             {/* Badge */}
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm mb-6 border border-white/10">
               <span className="w-2 h-2 rounded-full bg-cyan-400 mr-2 animate-pulse"></span>
-              <span className="text-xs font-medium text-cyan-400">Full-Stack Developer</span>
+              <span className="text-xs font-medium text-cyan-400">Full-Stack & RPA Automation Developer</span>
             </div>
             
             {/* Main headline */}
@@ -72,7 +78,7 @@ export default function HeroBanner() {
             
             {/* Description */}
             <p className="text-white/70 text-lg mb-8 max-w-lg">
-              I build elegant, performant, and accessible web applications that solve real-world problems and deliver exceptional user experiences.
+            I build efficient, scalable, and intelligent web applications and automation systems that solve real-world challenges. Passionate about how things work under the hood, I specialize in creating custom RPA bots, optimizing backend processes, and delivering robust digital solutions with a strong focus on performance and maintainability.
             </p>
             
             {/* CTA buttons */}

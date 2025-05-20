@@ -75,15 +75,15 @@ export default function AboutMe() {
                   {/* Stats and metrics */}
                   <div className="grid grid-cols-3 gap-4 mb-8">
                     <div className="text-center p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-                      <div className="text-3xl font-bold text-white mb-1">5+</div>
+                      <div className="text-3xl font-bold text-white mb-1">1.5</div>
                       <div className="text-xs text-white/70">Years Experience</div>
                     </div>
                     <div className="text-center p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-                      <div className="text-3xl font-bold text-white mb-1">50+</div>
+                      <div className="text-3xl font-bold text-white mb-1">5+</div>
                       <div className="text-xs text-white/70">Projects</div>
                     </div>
                     <div className="text-center p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-                      <div className="text-3xl font-bold text-white mb-1">30+</div>
+                      <div className="text-3xl font-bold text-white mb-1">5+</div>
                       <div className="text-xs text-white/70">Happy Clients</div>
                     </div>
                   </div>
@@ -92,6 +92,9 @@ export default function AboutMe() {
                   <div>
                     <h3 className="text-white text-sm font-medium mb-3">Tech Stack</h3>
                     <div className="flex flex-wrap gap-2">
+                    <div className="px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500/20 to-cyan-500/10 text-cyan-300 text-xs border border-cyan-500/30">
+                        Python
+                      </div>
                       <div className="px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500/20 to-cyan-500/10 text-cyan-300 text-xs border border-cyan-500/30">
                         React.js
                       </div>

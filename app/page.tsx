@@ -1,220 +1,346 @@
-// import Navbar from "@/components/Navbar";
-
-//  async function getServerSideProps() {
-//   const result = await fetch('https://catfact.ninja/breeds');
-//   return result.json();
-// }
-
-// export default async function Home() {
-//   const data = await getServerSideProps();
-//   return (
-//     <>
-//       <div className="container mt-5">
-//         <h1 className="text-3xl font-bold underline">Welcome to SYMBOL MASTER</h1>
-//         <h2>{data.data[0]?.breed}</h2>
-//         <p className="lead">
-//           {/* Hi, I'm Abdhul Rahim Sheikh M , a web developer passionate about building responsive and dynamic web apps. */}
-//           {/* SYMBOL MASTER */}
-//         </p>
-//       </div>
-//     </>
-//   );
-// }
 'use client'
-import { useState, useEffect } from "react";
-import { ArrowRight, ChevronDown, Github, Linkedin, Twitter } from "lucide-react";
-import ProjectBanner from "@/components/MyProjects";
-import AboutMe from "@/components/Aboutme";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, ChevronDown, Download, Circle } from "lucide-react";
 
-export default function HeroBanner() {
-  const [isVisible, setIsVisible] = useState(false);
-  
-  // Animation trigger on load
+export default function MinimalPortfolio() {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isNavbarScrolled, setIsNavbarScrolled] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState<number | null>(0);
+
+  // Custom cursor and scroll reveal
   useEffect(() => {
-    setIsVisible(true);
+    // Scroll reveal logic
+    const reveals = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 100;
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add('active');
+        }
+      }
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll(); // Initial check
+
+    // Scroll progress logic
+    const handleScroll = () => {
+      // Navbar threshold logic
+      if (window.scrollY > 50) {
+        setIsNavbarScrolled(true);
+      } else {
+        setIsNavbarScrolled(false);
+      }
+      
+      // Calculate total page scroll percentage
+      const totalScroll = document.documentElement.scrollTop;
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scroll = `${(totalScroll / windowHeight) * 100}`;
+      setScrollProgress(Number(scroll));
+    };
+    window.addEventListener('scroll', handleScroll);
+
+
+
+    return () => {
+      window.removeEventListener('scroll', revealOnScroll);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-indigo-950 via-purple-950 to-indigo-950">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Top right gradient circle */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/20 rounded-full filter blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
-        
-        {/* Bottom left gradient circle */}
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-600/20 rounded-full filter blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
-        
-        {/* Center accent */}
-        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-indigo-600/10 rounded-full filter blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
-        
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      </div>
+  const toggleAccordion = (index: number) => {
+    setOpenAccordion(openAccordion === index ? null : index);
+  };
 
-      {/* Content container */}
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="text-white">Hello ! Im</span>
-              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400">
-                Abdhul Rahim Sheikh M
+  return (
+    <div className="min-h-screen font-sans antialiased text-black bg-white select-none">
+      <div className="noise-bg"></div>
+      
+      {/* Top Progress Bar */}
+      <div className="fixed top-0 left-0 h-1 bg-gray-900 z-[60] transition-all duration-100 ease-out" style={{ width: `${scrollProgress}%` }}></div>
+
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 w-full z-50 pointer-events-none transition-all duration-500">
+        <div className={`absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border-b pointer-events-none
+          ${isNavbarScrolled ? 'opacity-100 bg-white/90 backdrop-blur-md border-gray-200 shadow-sm' : 'opacity-0 bg-transparent border-transparent'}`}></div>
+        <div className={`relative z-10 max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isNavbarScrolled ? 'py-4 md:py-6' : 'py-8 md:py-10'}`}>
+          <div className="flex items-center pointer-events-auto">
+            <Link href="/" className="font-sans text-lg md:text-xl tracking-[0.05em] uppercase font-normal text-black hover:opacity-70 transition-opacity">
+              Abdhul.
+            </Link>
+          </div>
+          <div className="flex items-center gap-8 md:gap-12 pointer-events-auto">
+            <a href="#about" className="inline-block text-sm font-sans uppercase tracking-widest text-black hover:text-gray-400 transition-colors">About</a>
+            <a href="#work" className="inline-block text-sm font-sans uppercase tracking-widest text-black hover:text-gray-400 transition-colors">Work</a>
+            <a href="#contact" className="inline-block text-sm font-sans uppercase tracking-widest text-black hover:text-gray-400 transition-colors hidden md:block">Contact</a>
+          </div>
+        </div>
+      </nav>
+
+      <main className="w-full overflow-hidden">
+        {/* Hero Section */}
+        <section className="min-h-[90vh] flex flex-col justify-center items-center px-6 md:px-12 relative overflow-hidden bg-white">
+          <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-start justify-center pt-32 pb-16">
+            <h1 className="font-serif text-[8.5vw] md:text-[5.5vw] leading-[0.9] -tracking-[0.03em] text-black cursor-default mt-12 delay-100 reveal active">
+              <span className="block md:whitespace-nowrap overflow-hidden">
+                <span className="inline-block transform transition-transform duration-1000 translate-y-0 opacity-100">I'm Abdhul, practicing engineering</span>
+                <span className="text-[#a3a3a3] inline-block transform transition-transform duration-1000 delay-200 translate-y-0 opacity-100"> since 2020.</span>
+              </span>
+              <span className="block mt-1 md:mt-4 overflow-hidden">
+                <span className="inline-block transform transition-transform duration-1000 delay-300 translate-y-0 opacity-100">Architecting thoughtful</span>
+                <span className="text-[#a3a3a3] inline-block transform transition-transform duration-1000 delay-500 translate-y-0 opacity-100"> solutions.</span>
               </span>
             </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left column - Text content */}
-          <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            {/* Badge */}
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm mb-6 border border-white/10">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 mr-2 animate-pulse"></span>
-              <span className="text-xs font-medium text-cyan-400">Full-Stack & RPA Automation Developer</span>
+          </div>
+          
+          <div className="absolute bottom-12 left-6 right-6 md:left-12 md:right-12 reveal delay-300 active">
+            <div className="w-full h-px bg-gray-200 mb-6"></div>
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-[11px] font-sans text-gray-500 uppercase tracking-widest text-center md:text-left mb-4 md:mb-0 hidden md:block">
+                Currently building Next.js apps & RPA Bots.
+              </p>
+              <div className="flex gap-6">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-sans text-gray-500 uppercase tracking-widest hover:text-black transition-colors flex items-center gap-1 group">
+                  LinkedIn
+                  <ArrowRight size={12} className="transform group-hover:-rotate-45 transition-transform" />
+                </a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-sans text-gray-500 uppercase tracking-widest hover:text-black transition-colors flex items-center gap-1 group">
+                  GitHub
+                  <ArrowRight size={12} className="transform group-hover:-rotate-45 transition-transform" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* About & Experience Section */}
+        <section id="about" className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto">
+          <div className="w-full h-px bg-gray-200 mb-20 reveal"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-4">
+              <div className="sticky top-32">
+                <h2 className="font-sans font-semibold text-5xl md:text-6xl leading-[0.9] text-black reveal">About</h2>
+              </div>
             </div>
             
-            {/* Main headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="text-white">Crafting</span>
-              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400">
-                Digital Experiences
-              </span>
-            </h1>
-            
-            {/* Description */}
-            <p className="text-white/70 text-lg mb-8 max-w-lg">
-            I build efficient, scalable, and intelligent web applications and automation systems that solve real-world challenges. Passionate about how things work under the hood, I specialize in creating custom RPA bots, optimizing backend processes, and delivering robust digital solutions with a strong focus on performance and maintainability.
-            </p>
-            
-            {/* CTA buttons */}
-            <div className="flex flex-wrap gap-4">
-              <button className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-6 py-3 rounded-full font-medium flex items-center gap-2
-                              shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transform hover:-translate-y-0.5 
-                              transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-400 hover:to-purple-400">
-                View Projects
-                <ArrowRight size={18} />
-              </button>
+            <div className="lg:col-span-8 flex flex-col gap-12">
+              <div className="flex flex-col gap-8 reveal delay-100">
+                <p className="font-sans text-2xl md:text-3xl font-light leading-relaxed text-black">
+                  I approach software engineering with a focus on architecture and long-term maintainability. My expertise bridges the gap between complex backend logic and seamless user experiences.
+                </p>
+                <p className="font-sans text-xl md:text-2xl font-light leading-relaxed text-gray-500">
+                  Whether it's designing highly available web services, integrating RPA workflows, or crafting intuitive frontends using React and Next.js, my goal is to deliver solutions that drive business value without compromising on code quality.
+                </p>
+              </div>
               
-              <button className="bg-white/10 backdrop-blur-sm text-white border border-white/10 px-6 py-3 rounded-full font-medium
-                              hover:bg-white/20 transition-all duration-300">
-                Contact Me
-              </button>
+              <div className="w-full h-px bg-gray-200 my-4 reveal"></div>
+              
+              {/* Experience Accordion */}
+              <div className="flex flex-col">
+                <div className="mb-12 text-sm font-sans uppercase tracking-widest text-gray-400 reveal">Experience</div>
+                
+                {/* Role 1 */}
+                <div className="border-b border-gray-200 py-8 cursor-pointer group reveal" onClick={() => toggleAccordion(0)}>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex flex-col">
+                      <h3 className="text-2xl md:text-3xl font-sans font-medium text-black mb-1 group-hover:text-gray-500 transition-colors">Full-Stack Developer</h3>
+                      <p className="font-sans text-lg text-gray-500">Enterprise Solutions Inc.</p>
+                    </div>
+                    <div className="flex items-center gap-4 md:gap-8">
+                      <span className="hidden md:block font-sans text-sm text-gray-400 uppercase tracking-widest">2022 — Present</span>
+                      <button className={`w-8 h-8 flex items-center justify-center transition-transform duration-300 text-black ${openAccordion === 0 ? 'rotate-180' : ''}`}>
+                        <ChevronDown />
+                      </button>
+                    </div>
+                  </div>
+                  <div className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${openAccordion === 0 ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                    <div className="overflow-hidden">
+                      <div className="pt-6 pb-2">
+                        <p className="font-sans text-lg text-gray-600 leading-relaxed max-w-3xl">
+                          Leading development of scalable web applications using Next.js and Node.js. Architecting cloud-native solutions and overseeing the integration of automated CI/CD pipelines.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Role 2 */}
+                <div className="border-b border-gray-200 py-8 cursor-pointer group reveal" onClick={() => toggleAccordion(1)}>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex flex-col">
+                      <h3 className="text-2xl md:text-3xl font-sans font-medium text-black mb-1 group-hover:text-gray-500 transition-colors">RPA Engineer</h3>
+                      <p className="font-sans text-lg text-gray-500">Automation Labs</p>
+                    </div>
+                    <div className="flex items-center gap-4 md:gap-8">
+                      <span className="hidden md:block font-sans text-sm text-gray-400 uppercase tracking-widest">2020 — 2022</span>
+                      <button className={`w-8 h-8 flex items-center justify-center transition-transform duration-300 text-black ${openAccordion === 1 ? 'rotate-180' : ''}`}>
+                        <ChevronDown />
+                      </button>
+                    </div>
+                  </div>
+                  <div className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${openAccordion === 1 ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                    <div className="overflow-hidden">
+                      <div className="pt-6 pb-2">
+                        <p className="font-sans text-lg text-gray-600 leading-relaxed max-w-3xl">
+                          Designed and implemented complex automation workflows replacing hundreds of hours of manual labor per month. Specialized in Python and enterprise RPA tools.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex justify-end pt-8 reveal">
+                <a href="javascript:void(0)" className="inline-flex items-center gap-2 font-sans text-sm font-medium tracking-widest uppercase hover:text-gray-500 transition-colors text-black pb-1 border-b border-black hover:border-gray-500">
+                  <Download size={16} /> Download Full CV
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Selected Works Section */}
+        <section id="work" className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto bg-[#fafafa] rounded-3xl mb-24">
+          <div className="flex justify-between items-end mb-16 reveal">
+            <h2 className="font-sans font-semibold text-5xl md:text-6xl text-black tracking-tight">Selected Works</h2>
+            <span className="font-sans text-2xl md:text-4xl text-gray-300 font-light">20'–24'</span>
+          </div>
+          
+          <div className="flex flex-col gap-12 md:gap-[80px]">
+            {/* Project 1 */}
+            <a href="javascript:void(0)" onClick={(e) => e.preventDefault()} className="group cursor-pointer reveal block w-full">
+              <div className="relative w-full h-[50vh] md:h-[70vh] bg-gray-200 rounded-xl overflow-hidden mb-6">
+                {/* Project Image */}
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500 pointer-events-none"></div>
+                <div className="absolute top-6 left-6 bg-white px-4 py-2 flex items-center gap-2 rounded-full border border-gray-100 shadow-sm">
+                  <Circle size={8} className="fill-black text-black animate-pulse" />
+                  <span className="text-black text-xs font-semibold tracking-wide uppercase">Live</span>
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                <div>
+                  <h3 className="text-3xl md:text-4xl font-sans font-medium mb-3 text-black group-hover:text-gray-500 transition-colors duration-300">Financial Dashboard Architecture</h3>
+                  <p className="text-gray-500 font-sans text-lg font-light max-w-2xl leading-relaxed">
+                    A comprehensive full-stack Next.js application designed to handle high-frequency data updates for thousands of concurrent users.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-2 border-b border-black pb-1 group-hover:border-gray-500 group-hover:text-gray-500 transition-all">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-black group-hover:text-gray-500 transition-colors">View Case Study</span>
+                  <ArrowRight size={14} className="transform -rotate-45" />
+                </div>
+              </div>
+            </a>
+
+            {/* Grid for Smaller Projects */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-[40px]">
+              {/* Project 2 */}
+              <a href="javascript:void(0)" onClick={(e) => e.preventDefault()} className="group cursor-pointer reveal block">
+                <div className="overflow-hidden rounded-xl bg-gray-100 aspect-[4/3] mb-6 relative">
+                  <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1470&auto=format&fit=crop" alt="Document Processing" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500 pointer-events-none"></div>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-sans font-medium mb-2 text-black group-hover:text-gray-500 transition-colors duration-300">Intelligent Document Processing</h3>
+                  <p className="text-gray-500 font-sans font-light leading-relaxed mb-6">
+                    RPA bot utilizing OCR and machine learning to extract and process over 10k invoices monthly.
+                  </p>
+                  <div className="inline-flex items-center gap-2 border-b border-black pb-1 group-hover:border-gray-500 transition-all">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-black group-hover:text-gray-500">View Project</span>
+                    <ArrowRight size={14} className="transform -rotate-45 text-black group-hover:text-gray-500" />
+                  </div>
+                </div>
+              </a>
+
+              {/* Project 3 */}
+              <a href="javascript:void(0)" onClick={(e) => e.preventDefault()} className="group cursor-pointer reveal block delay-100">
+                <div className="overflow-hidden rounded-xl bg-gray-100 aspect-[4/3] mb-6 relative">
+                  <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1470&auto=format&fit=crop" alt="Serverless Auth" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500 pointer-events-none"></div>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-sans font-medium mb-2 text-black group-hover:text-gray-500 transition-colors duration-300">Serverless Auth Microservice</h3>
+                  <p className="text-gray-500 font-sans font-light leading-relaxed mb-6">
+                    A highly scalable authentication service built on AWS Lambda, providing seamless JWT verification.
+                  </p>
+                  <div className="inline-flex items-center gap-2 border-b border-black pb-1 group-hover:border-gray-500 transition-all">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-black group-hover:text-gray-500">View Project</span>
+                    <ArrowRight size={14} className="transform -rotate-45 text-black group-hover:text-gray-500" />
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Philosophy Section */}
+        <section className="px-6 md:px-12 py-24 md:py-32 max-w-7xl mx-auto border-t border-gray-200">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 reveal">
+            <h2 className="font-sans font-semibold text-5xl md:text-6xl text-black leading-tight">Engineering<br/>Philosophy</h2>
+            <div className="flex flex-col items-start md:items-end mt-8 md:mt-0">
+              <p className="font-sans text-xl text-gray-500 max-w-md md:text-right leading-relaxed font-light">
+                Guiding principles that shape architecture, code quality, and technical decisions.
+              </p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 reveal delay-100">
+            {[
+              { num: '01', title: 'Scalability', desc: 'Designing systems that grow seamlessly with traffic and data without demanding complete rewrites.' },
+              { num: '02', title: 'Simplicity', desc: 'Avoiding over-engineering. Clear, self-documenting code is always superior to "clever" one-liners.' },
+              { num: '03', title: 'Security First', desc: 'Implementing zero-trust models and assuming the environment is inherently hostile from day one.' },
+              { num: '04', title: 'Performance', desc: 'Optimizing the critical rendering path and backend query latency for exceptional user experiences.' }
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col h-full bg-white p-6 border border-gray-100 hover:border-gray-300 transition-colors rounded-xl group cursor-default">
+                <span className="font-mono text-xs text-gray-400 mb-12">{item.num}</span>
+                <div className="mt-auto transform transition-transform duration-500 group-hover:-translate-y-2">
+                  <h3 className="font-sans font-medium text-2xl text-black mb-4">{item.title}</h3>
+                  <p className="font-sans text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer id="contact" className="px-6 md:px-12 pt-32 pb-12 bg-black text-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10 flex flex-col">
+          <div className="flex flex-col items-start mb-24 md:mb-32">
+            <div className="flex flex-col items-start gap-2 mb-16 reveal">
+              <h2 className="font-sans font-semibold text-5xl md:text-7xl leading-tight text-white/50">Ready to build?</h2>
+              <a href="mailto:hello@example.com" className="group flex items-center gap-6 pb-2 border-b-2 border-transparent hover:border-white transition-all w-fit pr-8">
+                <h2 className="font-sans font-semibold text-5xl md:text-7xl leading-tight text-white whitespace-nowrap">Let's talk.</h2>
+                <div className="transform group-hover:translate-x-4 transition-transform duration-500 ease-out">
+                  <ArrowRight size={48} className="text-white hidden md:block" />
+                  <ArrowRight size={32} className="text-white md:hidden" />
+                </div>
+              </a>
             </div>
             
-            {/* Social links */}
-            <div className="mt-12">
-              <p className="text-white/50 text-sm mb-3">Find me on</p>
-              <div className="flex gap-4">
-                <a href="#" className="text-white/70 hover:text-cyan-400 transition-colors duration-300">
-                  <Github size={24} />
-                </a>
-                <a href="#" className="text-white/70 hover:text-cyan-400 transition-colors duration-300">
-                  <Linkedin size={24} />
-                </a>
-                <a href="#" className="text-white/70 hover:text-cyan-400 transition-colors duration-300">
-                  <Twitter size={24} />
-                </a>
+            <div className="flex flex-wrap gap-8 md:gap-16 reveal delay-100">
+              <div className="flex flex-col gap-4">
+                <p className="text-xs uppercase tracking-widest text-white/40 font-semibold">Socials</p>
+                <a href="#" className="font-sans text-lg text-white hover:text-gray-400 transition-colors">LinkedIn</a>
+                <a href="#" className="font-sans text-lg text-white hover:text-gray-400 transition-colors">GitHub</a>
+                <a href="#" className="font-sans text-lg text-white hover:text-gray-400 transition-colors">Twitter</a>
+              </div>
+              <div className="flex flex-col gap-4">
+                <p className="text-xs uppercase tracking-widest text-white/40 font-semibold">Location</p>
+                <p className="font-sans text-lg text-white">Available for remote worldwide.</p>
               </div>
             </div>
           </div>
           
-          {/* Right column - Visual element */}
-          <div className={`relative flex justify-center transition-all duration-1000 delay-300 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            {/* Main feature image/element */}
-            <div className="relative">
-              {/* Decorative frame */}
-              <div className="absolute inset-0 rounded-2xl border border-white/10 backdrop-blur-sm bg-white/5 transform rotate-6 scale-105"></div>
-              
-              {/* Main content card */}
-              <div className="relative rounded-2xl overflow-hidden border border-white/20 backdrop-blur-md bg-gradient-to-br from-white/10 to-white/5 p-1 shadow-xl">
-                <div className="bg-gradient-to-br from-indigo-900/80 to-purple-900/80 rounded-xl overflow-hidden p-6">
-                  {/* Card header */}
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
-                    <div className="text-xs text-white/50">portfolio.js</div>
-                  </div>
-                  
-                  {/* Code snippet with syntax highlighting */}
-                  <div className="text-sm font-mono">
-                    <div className="text-cyan-400">{`function `}<span className="text-purple-400">Portfolio</span>{`() {`}</div>
-                    <div className="ml-4 text-white/70">{`const `}<span className="text-cyan-300">skills</span>{` = [`}</div>
-                    <div className="ml-8 text-green-300">
-                      <div>{`'React.js',`}</div>
-                      <div>{`'Next.js',`}</div>
-                      <div>{`'Tailwind CSS',`}</div>
-                      <div>{`'TypeScript',`}</div>
-                      <div>{`'Node.js'`}</div>
-                    </div>
-                    <div className="ml-4 text-white/70">{`];`}</div>
-                    <div className="ml-4 text-white/70 mt-4">{`return (`}</div>
-                    <div className="ml-8 text-purple-300">{`<`}<span className="text-yellow-300">div</span>{` `}<span className="text-cyan-300">className</span>{`="`}<span className="text-green-300">portfolio</span>{`">`}</div>
-                    <div className="ml-12 text-purple-300">{`<`}<span className="text-yellow-300">h1</span>{`>My Projects</`}<span className="text-yellow-300">h1</span>{`>`}</div>
-                    <div className="ml-12 text-purple-300">{`{`}<span className="text-white/70">skills.map(skill =&gt; (</span>{`}`}</div>
-                    <div className="ml-16 text-purple-300"><span className="blink-cursor">|</span></div>
-                    <div className="ml-4 text-white/70 mt-4">{`);`}</div>
-                    <div className="text-cyan-400">{`}`}</div>
-                  </div>
-                  
-                  {/* Animated cursor */}
-                  <style jsx>{`
-                    .blink-cursor {
-                      animation: blink 1s step-end infinite;
-                    }
-                    @keyframes blink {
-                      from, to { opacity: 1; }
-                      50% { opacity: 0; }
-                    }
-                  `}</style>
-                </div>
-              </div>
-              
-              {/* Decorative floating elements */}
-              <div className="absolute -top-4 -left-8 w-16 h-16 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-400 shadow-lg transform rotate-12 animate-float-slow">
-                <div className="w-full h-full flex items-center justify-center text-white">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-              
-              <div className="absolute -bottom-6 -right-4 w-20 h-20 rounded-lg bg-gradient-to-r from-purple-500 to-purple-400 shadow-lg transform -rotate-12 animate-float">
-                <div className="w-full h-full flex items-center justify-center text-white">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
+          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/20 text-white/40 text-sm font-sans reveal delay-200">
+            <p>Built with Next.js & Tailwind</p>
+            <p className="mt-4 md:mt-0">© {new Date().getFullYear()} Abdhul Rahim</p>
           </div>
         </div>
-        
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce-slow">
-          <span className="text-white/50 text-sm mb-2">Scroll Down</span>
-          <ChevronDown size={20} className="text-white/50" />
-        </div>
-      </div>
-      
-      {/* Bottom curve */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden">
-        <svg className="relative block w-full h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path 
-            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C0,0,0,32,0,48C0,80,50,106,100,117Z" 
-            className="fill-indigo-950/80"
-          ></path>
-        </svg>
-      </div>
-
-      <ProjectBanner />
-      <AboutMe />
-      
-      {/* Custom CSS for grid background */}
-      
+      </footer>
     </div>
   );
 }

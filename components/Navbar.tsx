@@ -103,7 +103,7 @@ export default function Navbar() {
                                  opacity-0 invisible group-hover:opacity-100 group-hover:visible 
                                  transition-all duration-300 transform scale-95 group-hover:scale-100">
                     <div className="py-2">
-                      {item.dropdownItems.map((dropdownItem) => (
+                      {item.dropdownItems?.map((dropdownItem: any) => (
                         <a
                           key={dropdownItem.name}
                           href={dropdownItem.href}
@@ -183,7 +183,7 @@ export default function Navbar() {
               {/* Dropdown items for mobile */}
               {item.hasDropdown && item.name.toLowerCase() === "projects" && (
                 <div className="mt-4 space-y-4">
-                  {item.dropdownItems.map((dropdownItem) => (
+                  {item.dropdownItems?.map((dropdownItem: any) => (
                     <a
                       key={dropdownItem.name}
                       href={dropdownItem.href}
